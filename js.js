@@ -10,18 +10,49 @@ var square9 = document.querySelector(".square9")
 var board = document.querySelector(".board")
 var boarddivs = document.querySelectorAll(".board, div")
 var squares = document.querySelectorAll('main div')
-var randomSquare = document.querySelector('.square' + coinLocation)
+var red = document.querySelector(".red")
+var moneyX = document.querySelector(".moneyX")
+var moneyO = document.querySelector(".moneyO")
 
-var coinLocation = Math.floor((Math.random() * 8) + 0)
 
-
+// VARIABLES
 var previousSquareClicked = ''
 var playerTurn = true
 var i = 'x'
-
+var CoinsX = 0
+var Coins0 = 0
+var solutions = [
+    [i,i,i, // solution 1
+    'I','I','I',
+    'I','I','I'], 
+    ['I','I','I', // solution 2
+    i,i,i,
+    'I','I','I'],
+    ['I','I','I', // solution 3
+    'I','I','I',
+    i,i,i],
+    [i,'I','I', // solution 4
+    'I',i,'I',
+    'I','I',i],
+    ['I','I',i, // solution 5
+    'I',i,'I',
+    i,'I','I'],
+    [i,'I','I', // solution 6
+    i,'I','I',
+    i,'I','I'],
+    ['I',i,'I', // solution 7
+    'I',i,'I',
+    'I',i,'I'],
+    ['I','I',i, // solution 8
+    'I','I',i,
+    'I','I',i]
+]
 var boardArray = ['','','',
                 '','','',
-                '','',''] 
+                '','','']
+                
+
+// FUNCTIONS
 
 var XorO = function () {
     if (playerTurn) {
@@ -30,82 +61,113 @@ var XorO = function () {
         i = 'o'
     }
 }
+
 var generateCoin = function() { 
     var coinChance = Math.floor((Math.random() * 3) + 1)
  if (coinChance === 3) {
-    var coinLocation = Math.floor((Math.random() * 8) + 0)
+    var coinLocation = Math.floor((Math.random() * 9) + 1)
+    var randomSquare = document.querySelector('.square' + coinLocation)
+        if (randomSquare.textContent === 'x'){
+            return
+        } else if (randomSquare.textContent === 'o') {
+            return
+        } else {
+        randomSquare.classList.add("coin")
+        }
+    }
+}
+
+var removeMoveandTake = function() {
+    square1.classList.remove('chessMove', 'chessTake');
+    square2.classList.remove('chessMove', 'chessTake');
+    square3.classList.remove('chessMove', 'chessTake');
+    square4.classList.remove('chessMove', 'chessTake');
+    square5.classList.remove('chessMove', 'chessTake');
+    square6.classList.remove('chessMove', 'chessTake');
+    square7.classList.remove('chessMove', 'chessTake');
+    square8.classList.remove('chessMove', 'chessTake');
+    square9.classList.remove('chessMove', 'chessTake');
+}
+
+var takePeice = function()  {
+    if (event.target.classList.contains('chessTake')){
+    event.target.textContent = i
+    previousSquareClicked.textContent = ''
+    boardArray[Number(previousSquareClicked.dataset.cell)] = ''
+    event.target.textContent = i
+    solutions.forEach(compare)
+    generateCoin()
+    playerTurn = !playerTurn
+    removeMoveandTake()
     
     }
 }
 
-var handleClick = function(event) {
-    XorO()
-    clickOccupied()
-    boardArray[Number(event.target.dataset.cell)] = i
-    var solutions = [
-        [i,i,i, // solution 1
-        'I','I','I',
-        'I','I','I'], 
-        ['I','I','I', // solution 2
-        i,i,i,
-        'I','I','I'],
-        ['I','I','I', // solution 3
-        'I','I','I',
-        i,i,i],
-        [i,'I','I', // solution 4
-        'I',i,'I',
-        'I','I',i],
-        ['I','I',i, // solution 5
-        'I',i,'I',
-        i,'I','I'],
-        [i,'I','I', // solution 6
-        i,'I','I',
-        i,'I','I'],
-        ['I',i,'I', // solution 7
-        'I',i,'I',
-        'I',i,'I'],
-        ['I','I',i, // solution 8
-        'I','I',i,
-        'I','I',i]
-    ]
-    if (event.target.classList.contains('chessTake')){
-        event.target.textContent = i
-        previousSquareClicked.textContent = ''
-        boardArray[Number(previousSquareClicked.dataset.cell)] = ''
-        event.target.textContent = i
-        solutions.forEach(compare)
-        playerTurn = !playerTurn
-        square1.classList.remove('chessMove', 'chessTake');
-        square2.classList.remove('chessMove', 'chessTake');
-        square3.classList.remove('chessMove', 'chessTake');
-        square4.classList.remove('chessMove', 'chessTake');
-        square5.classList.remove('chessMove', 'chessTake');
-        square6.classList.remove('chessMove', 'chessTake');
-        square7.classList.remove('chessMove', 'chessTake');
-        square8.classList.remove('chessMove', 'chessTake');
-        square9.classList.remove('chessMove', 'chessTake');
+// check winner
+var compare = function(arr){
+    var counter = 0
+    arr.forEach(function(cell, index) {
+        if (cell !== 'I' && boardArray[index] === i){
+            counter++
+            if (counter === 3){
+                console.log('winner')
+            }
+        }
+    })
+}
+
+var pickUpCoin = function() {
+    if (event.target.classList.contains('coin' && 'chessMove')){
+        if (event.target.textContent === '') {
+            if (event.target.classList.contains('coin')){
+                event.target.classList.remove('coin')
+            }
+        }
+    } else if (event.target.classList.contains('coin')) {
+            return
     }
+}
+var newPieceAndMove = function() {
     if (event.target.textContent === '') {
-        if (event.target.classList.contains('chessMove')){
+        if (event.target.classList.contains('coin')) {
+            return
+        } else if (event.target.classList.contains('chessMove')){
             previousSquareClicked.textContent = ''
             boardArray[Number(previousSquareClicked.dataset.cell)] = ''
         }
         event.target.textContent = i
         solutions.forEach(compare)
+        generateCoin()
         playerTurn = !playerTurn
-        square1.classList.remove('chessMove', 'chessTake');
-        square2.classList.remove('chessMove', 'chessTake');
-        square3.classList.remove('chessMove', 'chessTake');
-        square4.classList.remove('chessMove', 'chessTake');
-        square5.classList.remove('chessMove', 'chessTake');
-        square6.classList.remove('chessMove', 'chessTake');
-        square7.classList.remove('chessMove', 'chessTake');
-        square8.classList.remove('chessMove', 'chessTake');
-        square9.classList.remove('chessMove', 'chessTake');
+        removeMoveandTake()
     } else {
         previousSquareClicked = event.target
     }
 }
+
+
+
+
+
+
+
+var handleClick = function(event) {
+    XorO()
+    clickOccupied()
+    // may be the problem with board array
+    boardArray[Number(event.target.dataset.cell)] = i
+    takePeice()
+    pickUpCoin()
+    newPieceAndMove()
+}
+
+
+
+
+
+
+
+
 
 var clickOccupied = function() {
     // x on square1
@@ -388,22 +450,4 @@ var clickOccupied = function() {
 
 
 
-
-// check winner
-var compare = function(arr){
-    var counter = 0
-    arr.forEach(function(cell, index) {
-        if (cell !== 'I' && boardArray[index] === i){
-            counter++
-            if (counter === 3){
-                console.log('winner')
-            }
-        }
-    })
-}
-
-
-
-
-// board.addEventListener('click', clickOccupied)
 board.addEventListener('click', handleClick)

@@ -3,6 +3,7 @@ div {
     width: 100px;
     border: solid 1px black;
     text-align: center;
+    /* font-size: 0px; */
     
 }
 main {
@@ -24,4 +25,10 @@ main {
 .coinPlayer {
     height: 50px;
     width: 50px;
+}
+.coin {
+    background-image: url(Coin\ \ big.png);
+    background-size: 50px;
+    background-repeat: no-repeat;
+    background-position: center;
 }
