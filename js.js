@@ -88,7 +88,43 @@ var removeMoveandTake = function() {
     square8.classList.remove('chessMove', 'chessTake');
     square9.classList.remove('chessMove', 'chessTake');
 }
+var NEWremoveMoveandTake = function() {
+    if (square1.classList.contains('chessMove' || 'chessTake')) {
+        square1.classList.remove('chessMove', 'chessTake');
+    }
+    if (square2.classList.contains('chessMove' || 'chessTake')) {
+        square2.classList.remove('chessMove', 'chessTake');
 
+    }
+    if (square3.classList.contains('chessMove' || 'chessTake')) {
+        square3.classList.remove('chessMove', 'chessTake');
+
+    }
+    if (square4.classList.contains('chessMove' || 'chessTake')) {
+        square4.classList.remove('chessMove', 'chessTake');
+
+    }
+    if (square5.classList.contains('chessMove' || 'chessTake')) {
+        square5.classList.remove('chessMove', 'chessTake');
+
+    }
+    if (square6.classList.contains('chessMove' || 'chessTake')) {
+        square6.classList.remove('chessMove', 'chessTake');
+
+    }
+    if (square7.classList.contains('chessMove' || 'chessTake')) {
+        square7.classList.remove('chessMove', 'chessTake');
+
+    }
+    if (square8.classList.contains('chessMove' || 'chessTake')) {
+        square8.classList.remove('chessMove', 'chessTake');
+
+    }
+    if (square9.classList.contains('chessMove' || 'chessTake')) {
+        square9.classList.remove('chessMove', 'chessTake');
+
+    }
+}
 var takePeice = function()  {
     if (event.target.classList.contains('chessTake')){
     previousSquareClicked.textContent = ''
@@ -121,7 +157,6 @@ var movePeice = function()  {
     generateCoin()
     playerTurn = !playerTurn
     removeMoveandTake()
-    
     }
 }
 
@@ -178,6 +213,12 @@ var newPiece = function() {
 
 
 var handleClick = function(event) {
+    if (event.target.textContent === "x" && i === 'x') {
+        removeMoveandTake()
+    }
+    if (event.target.textContent === "o" && i === 'o') {
+        removeMoveandTake()
+    }
     XorO()
     clickOccupied()
     // may be the problem with board array
@@ -196,16 +237,21 @@ var handleClick = function(event) {
 
 
 var clickOccupied = function() {
+    
+    // console.log('sdfsdf')
     // x on square1
     if (event.target === square1 && square1.textContent === 'x' && i === 'x' && square2.textContent === "") {
         square2.classList.toggle('chessMove');
+        
     }
     if (event.target === square1 && square1.textContent === 'x' && i === 'x' && square4.textContent === "") {
         square4.classList.toggle('chessMove');
+        
     }
     // x on square1 takes
     if (event.target === square1 && square1.textContent === 'x' && i === 'x' && square5.textContent === 'o') {
         square5.classList.toggle('chessTake');
+        
     }
     // x on square2
     if (event.target === square2 && square2.textContent === 'x' && i === 'x' && square1.textContent === "") {

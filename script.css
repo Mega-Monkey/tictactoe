@@ -3,7 +3,10 @@ div {
     width: 100px;
     border: solid 1px black;
     text-align: center;
-    /* font-size: 0px; */
+    font-size: 100px;
+}
+body {
+
     
 }
 main {
