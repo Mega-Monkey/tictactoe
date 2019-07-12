@@ -91,6 +91,28 @@ var removeMoveandTake = function() {
 
 var takePeice = function()  {
     if (event.target.classList.contains('chessTake')){
+    previousSquareClicked.textContent = ''
+    boardArray[Number(previousSquareClicked.dataset.cell)] = ''
+    event.target.textContent = i
+    solutions.forEach(compare)
+    generateCoin()
+    playerTurn = !playerTurn
+    removeMoveandTake()
+    }
+}
+
+var movePeice = function()  {
+    if (event.target.classList.contains('chessMove')){
+        //pick up coin
+        if (event.target.classList.contains('coin')){
+            event.target.classList.remove('coin')
+            if (i === 'x') {
+                moneyX.textContent = Number(moneyX.textContent) + 1
+            }
+            if (i === 'o') {
+                moneyO.textContent = Number(moneyO.textContent) + 1
+            }
+        }
     event.target.textContent = i
     previousSquareClicked.textContent = ''
     boardArray[Number(previousSquareClicked.dataset.cell)] = ''
@@ -116,30 +138,34 @@ var compare = function(arr){
     })
 }
 
-var pickUpCoin = function() {
-    if (event.target.classList.contains('coin' && 'chessMove')){
-        if (event.target.textContent === '') {
-            if (event.target.classList.contains('coin')){
-                event.target.classList.remove('coin')
-            }
-        }
-    } else if (event.target.classList.contains('coin')) {
-            return
-    }
-}
-var newPieceAndMove = function() {
+
+var newPiece = function() {
     if (event.target.textContent === '') {
         if (event.target.classList.contains('coin')) {
             return
-        } else if (event.target.classList.contains('chessMove')){
-            previousSquareClicked.textContent = ''
-            boardArray[Number(previousSquareClicked.dataset.cell)] = ''
+        } else if  (event.target.classList.contains('chessMove')) {
+            return
+        } else if (event.target.classList.contains('chessTake')) {
+            return
+        } else if (i === 'x' && Number(moneyX.textContent) === 0) {
+            return
+        } else if (i === 'o' && Number(moneyO.textContent) === 0) {
+            return
+        } else {
+            if (i === 'o') {
+                moneyO.textContent = moneyO.textContent - 1
+            }
+            if (i === 'x') {
+                moneyX.textContent = moneyX.textContent - 1
+            }
+            event.target.textContent = i
+            solutions.forEach(compare)
+            generateCoin()
+            playerTurn = !playerTurn
+            removeMoveandTake()
         }
-        event.target.textContent = i
-        solutions.forEach(compare)
-        generateCoin()
-        playerTurn = !playerTurn
-        removeMoveandTake()
+    } else if (event.target.classList.contains('chessTake')) {
+        return
     } else {
         previousSquareClicked = event.target
     }
@@ -156,9 +182,9 @@ var handleClick = function(event) {
     clickOccupied()
     // may be the problem with board array
     boardArray[Number(event.target.dataset.cell)] = i
+    newPiece()
     takePeice()
-    pickUpCoin()
-    newPieceAndMove()
+    movePeice()
 }
 
 
